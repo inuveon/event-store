@@ -44,7 +44,7 @@ namespace Inuveon.EventStore.Tests.Abstractions
             var aggregate = new Mock<IAggregateRoot>();
 
             // Act & Assert
-            Assert.Throws<NullReferenceException>(() => StoreEvent.Create(aggregate.Object, null));
+            Assert.Throws<ArgumentNullException>(() => StoreEvent.Create(aggregate.Object, null));
         }
     }
 }
