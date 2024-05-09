@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inuveon.EventStore", "Inuve
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inuveon.EventStore.Tests", "Inuveon.EventStore.Tests\Inuveon.EventStore.Tests.csproj", "{1862328B-0EE2-43AD-9881-8565043C7410}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inuveon.EventStore.CosmosDb", "Inuveon.EventStore.CosmosDb\Inuveon.EventStore.CosmosDb.csproj", "{39B5D596-C0DF-4947-A4E4-29D75540C526}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{1862328B-0EE2-43AD-9881-8565043C7410}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1862328B-0EE2-43AD-9881-8565043C7410}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1862328B-0EE2-43AD-9881-8565043C7410}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39B5D596-C0DF-4947-A4E4-29D75540C526}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39B5D596-C0DF-4947-A4E4-29D75540C526}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39B5D596-C0DF-4947-A4E4-29D75540C526}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39B5D596-C0DF-4947-A4E4-29D75540C526}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

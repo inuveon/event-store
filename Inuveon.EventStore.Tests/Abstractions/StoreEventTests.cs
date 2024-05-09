@@ -1,5 +1,3 @@
-using Xunit;
-using System;
 using Inuveon.EventStore.Abstractions;
 using Moq;
 
@@ -34,7 +32,7 @@ namespace Inuveon.EventStore.Tests.Abstractions
             var domainEvent = new Mock<IDomainEvent>();
 
             // Act & Assert
-            Assert.Throws<NullReferenceException>(() => StoreEvent.Create(null, domainEvent.Object));
+            Assert.Throws<NullReferenceException>(() => StoreEvent.Create(null!, domainEvent.Object));
         }
 
         [Fact]
@@ -44,7 +42,7 @@ namespace Inuveon.EventStore.Tests.Abstractions
             var aggregate = new Mock<IAggregateRoot>();
 
             // Act & Assert
-            Assert.Throws<NullReferenceException>(() => StoreEvent.Create(aggregate.Object, null));
+            Assert.Throws<NullReferenceException>(() => StoreEvent.Create(aggregate.Object, null!));
         }
     }
 }
