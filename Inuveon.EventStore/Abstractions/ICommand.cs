@@ -1,5 +1,10 @@
-namespace Inuveon.EventStore.Abstractions;
-
-public interface ICommand : IMessage
+namespace Inuveon.EventStore.Abstractions
 {
+    /// <summary>
+    /// Represents a command that directs a system to perform a specific action.
+    /// Extends IMessage to include necessary identifiers and timestamp information.
+    /// </summary>
+    public interface ICommand : IMessage
+    {
+    }
 }

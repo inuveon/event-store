@@ -17,8 +17,8 @@ namespace Inuveon.EventStore.Tests.Abstractions
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(domainEvent.Object.Id, result.Id);
-            Assert.Equal(aggregate.Object.Id, result.StreamId);
+            Assert.Equal(domainEvent.Object.MessageId, result.Id);
+            Assert.Equal(domainEvent.Object.AggregateId, result.StreamId);
             Assert.Equal(domainEvent.Object.GetType().FullName, result.EventType);
             Assert.Equal(domainEvent.Object, result.Data);
             Assert.Equal(domainEvent.Object.Timestamp, result.Timestamp);

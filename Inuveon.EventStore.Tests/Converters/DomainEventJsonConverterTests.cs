@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
 using Inuveon.EventStore.Converters;
@@ -7,11 +8,15 @@ namespace Inuveon.EventStore.Tests.Converters;
 
 public class DomainEventJsonConverterTests
 {
-    private string ValidJson => "{\"TypeDiscriminator\":\"" + typeof(DummyEvent).AssemblyQualifiedName + "\",\"Id\":\"00000000-0000-0000-0000-000000000000\",\"Timestamp\":\"0001-01-01T00:00:00+00:00\",\"Version\":0}";
-    private class DummyEvent : IDomainEvent
+    private string ValidJson => "{\"TypeDiscriminator\":\"" + typeof(SomethingHappened).AssemblyQualifiedName + "\",\"Id\":\"00000000-0000-0000-0000-000000000000\",\"Timestamp\":\"0001-01-01T00:00:00+00:00\",\"Version\":0}";
+    private class SomethingHappened : IDomainEvent
     {
-        public Guid Id { get; } = Guid.NewGuid();
+        public Guid MessageId { get; } = Guid.NewGuid();
+        public Guid? CorrelationId { get; }
+        public Guid? CausationId { get; }
+        
         public DateTimeOffset Timestamp { get; } = DateTimeOffset.UtcNow;
+        public Guid AggregateId { get; } = Guid.NewGuid();
         public long Version { get; } = 0;
     }
 
@@ -57,7 +62,7 @@ public class DomainEventJsonConverterTests
         using var memoryStream = new MemoryStream();
         using var writer = new Utf8JsonWriter(memoryStream, new JsonWriterOptions { Indented = true });
         var converter = new DomainEventJsonConverter();
-        var dummyEvent = new DummyEvent();
+        var dummyEvent = new SomethingHappened();
 
         converter.Write(writer, dummyEvent, options);
         writer.Flush();
@@ -70,7 +75,7 @@ public class DomainEventJsonConverterTests
 
         // Assert that the JSON contains the TypeDiscriminator with the correct value
         Assert.True(root.TryGetProperty("TypeDiscriminator", out var typeDiscriminatorProp));
-        var expectedTypeName = typeof(DummyEvent).AssemblyQualifiedName;
+        var expectedTypeName = typeof(SomethingHappened).AssemblyQualifiedName;
         Assert.Equal(expectedTypeName, typeDiscriminatorProp.GetString());
     }
 
