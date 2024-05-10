@@ -7,7 +7,7 @@ namespace Inuveon.EventStore.Abstractions
     /// A domain event is something that has happened in the past, 
     /// which is of interest to the business and can trigger behavior in the system.
     /// </remarks>
-    public interface IDomainEvent : IMessage
+    public interface IDomainEvent : IEvent
     {
         /// <summary>
         /// Gets the unique identifier of the aggregate root entity to which this event belongs.

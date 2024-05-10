@@ -2,47 +2,66 @@ using System.Text.Json;
 using Inuveon.EventStore.Converters;
 using Microsoft.Azure.Cosmos;
 
-namespace Inuveon.EventStore.CosmosDb;
-
-public class CustomCosmosSerializer : CosmosSerializer
+namespace Inuveon.EventStore.CosmosDb
 {
-    private readonly JsonSerializerOptions _options = new()
+    /// <summary>
+    /// Represents a custom serializer for Cosmos DB that uses the System.Text.Json library for serialization and deserialization.
+    /// </summary>
+    public class CustomCosmosSerializer : CosmosSerializer
     {
-        Converters = { new DomainEventJsonConverter() } 
-    };
-
-    public override T FromStream<T>(Stream stream)
-    {
-        if (stream is { CanSeek: true, Length: 0 })
+        /// <summary>
+        /// The options for the JSON serializer.
+        /// </summary>
+        private readonly JsonSerializerOptions _options = new()
         {
-            // Explicitly return default, knowing it could be null.
-            return default!;
-        }
+            Converters = { new DomainEventJsonConverter() }
+        };
 
-        using (StreamReader reader = new StreamReader(stream))
-        using (JsonDocument document = JsonDocument.Parse(reader.ReadToEnd()))
+        /// <summary>
+        /// Deserializes the JSON data from the provided stream into an instance of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of the object to deserialize.</typeparam>
+        /// <param name="stream">The stream that contains the JSON data to deserialize.</param>
+        /// <returns>The deserialized object from the stream.</returns>
+        public override T FromStream<T>(Stream stream)
         {
-            string json = document.RootElement.GetRawText();
-            T? result = JsonSerializer.Deserialize<T>(json, _options);
-
-            if (result == null)
+            if (stream is { CanSeek: true, Length: 0 })
             {
-                // Throw an exception if deserialization returns null but null is not expected
-                throw new InvalidOperationException("Deserialization returned null.");
+                // Explicitly return default, knowing it could be null.
+                return default!;
             }
 
-            return result;
-        }
-    }
+            using (StreamReader reader = new StreamReader(stream))
+            using (JsonDocument document = JsonDocument.Parse(reader.ReadToEnd()))
+            {
+                string json = document.RootElement.GetRawText();
+                T? result = JsonSerializer.Deserialize<T>(json, _options);
 
-    public override Stream ToStream<T>(T input)
-    {
-        MemoryStream stream = new MemoryStream();
-        using (Utf8JsonWriter writer = new Utf8JsonWriter(stream, new JsonWriterOptions { Indented = true }))
-        {
-            JsonSerializer.Serialize(writer, input, _options);
+                if (result == null)
+                {
+                    // Throw an exception if deserialization returns null but null is not expected
+                    throw new InvalidOperationException("Deserialization returned null.");
+                }
+
+                return result;
+            }
         }
-        stream.Position = 0;
-        return stream;
+
+        /// <summary>
+        /// Serializes the specified object to a JSON string and writes it to a stream.
+        /// </summary>
+        /// <typeparam name="T">The type of the object to serialize.</typeparam>
+        /// <param name="input">The object to serialize.</param>
+        /// <returns>A stream that contains the serialized JSON data.</returns>
+        public override Stream ToStream<T>(T input)
+        {
+            MemoryStream stream = new MemoryStream();
+            using (Utf8JsonWriter writer = new Utf8JsonWriter(stream, new JsonWriterOptions { Indented = true }))
+            {
+                JsonSerializer.Serialize(writer, input, _options);
+            }
+            stream.Position = 0;
+            return stream;
+        }
     }
 }
