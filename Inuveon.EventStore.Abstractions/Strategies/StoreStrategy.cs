@@ -1,4 +1,4 @@
-namespace Inuveon.EventStore.Abstractions.Storage;
+namespace Inuveon.EventStore.Abstractions.Strategies;
 
 public enum StoreStrategy
 {

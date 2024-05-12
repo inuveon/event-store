@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Inuveon.EventStore.Abstractions.Strategies;
 using Inuveon.EventStore.Extensions;
 using Inuveon.EventStore.Providers;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +14,7 @@ var builder = Host.CreateDefaultBuilder(args)
         // Configure EventStore
         services.AddEventStore(options =>
         {
+            options.StoreStrategy = StoreStrategy.OneStreamPerAggregate;
             options.StoreProvider = eventStoreConfig["Provider"] ?? "CosmosDB";
             options.AssemblyFilter = assembly => Assembly.GetExecutingAssembly().FullName!.Contains("Inuveon.EventStore");
 

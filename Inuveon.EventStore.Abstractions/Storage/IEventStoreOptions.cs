@@ -1,4 +1,6 @@
 
+using Inuveon.EventStore.Abstractions.Strategies;
+
 namespace Inuveon.EventStore.Abstractions.Storage
 {
     /// <summary>

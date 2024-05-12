@@ -7,6 +7,16 @@
         <PackageLicenseExpression>AGPL-3.0-only</PackageLicenseExpression>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <PackageId>Inuveon.EventStore</PackageId>
+        <Version>0.0.1</Version>
+        <PackageTags>Inuveon EventStore;Inuveon;EventStore;EventSourcing;CosmosDb;DynamoDb;CQRS</PackageTags>
+        <Description>
+            This client library enables working with a flexible, lightweight EventStore.
+        </Description>
+    </PropertyGroup>
+
+
     <ItemGroup>
       <PackageReference Include="FluentValidation" Version="11.9.1" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
