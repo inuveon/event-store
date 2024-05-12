@@ -1,9 +1,10 @@
+
 using Inuveon.EventStore.Abstractions.Messages;
 
-namespace Inuveon.EventStore.Tests.Abstractions.Example;
+namespace Inuveon.EventStore.Example.RegisterUser;
 
 /// <summary>
-///     The command to register a user.
+/// The command to register a user.
 /// </summary>
 public record RegisterUserCommand(
     Guid MessageId,

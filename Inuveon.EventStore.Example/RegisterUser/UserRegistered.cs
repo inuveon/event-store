@@ -1,9 +1,10 @@
+using Inuveon.EventStore.Abstractions;
 using Inuveon.EventStore.Abstractions.Messages;
 
-namespace Inuveon.EventStore.Tests.Abstractions.Example;
+namespace Inuveon.EventStore.Example.RegisterUser;
 
 /// <summary>
-///     A test event implementation.
+/// A test event implementation.
 /// </summary>
 public record UserRegistered(
     Guid MessageId,
@@ -12,5 +13,4 @@ public record UserRegistered(
     string EmailAddress,
     DateTimeOffset Timestamp,
     long Version,
-    Guid? CorrelationId,
-    Guid? CausationId) : IDomainEvent;
+    Guid? CorrelationId, Guid? CausationId) : IDomainEvent;

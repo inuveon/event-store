@@ -1,6 +1,7 @@
+using Inuveon.EventStore.Abstractions;
 using Inuveon.EventStore.Abstractions.Messages;
 
-namespace Inuveon.EventStore.Tests.Abstractions.Example;
+namespace Inuveon.EventStore.Example.RegisterUser;
 
 public record UserNameChanged(
     Guid MessageId,
@@ -8,5 +9,4 @@ public record UserNameChanged(
     string FirstName,
     DateTimeOffset Timestamp,
     long Version,
-    Guid? CorrelationId,
-    Guid? CausationId) : IDomainEvent;
+    Guid? CorrelationId, Guid? CausationId) : IDomainEvent;

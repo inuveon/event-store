@@ -65,7 +65,7 @@ BenchmarkDotNet.Artifacts/
 project.lock.json
 project.fragment.lock.json
 artifacts/
-
+appsettings.Development.json
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
 
@@ -101,6 +101,7 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
+*.Development.json
 
 # Chutzpah Test files
 _Chutzpah*

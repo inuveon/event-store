@@ -1,24 +1,14 @@
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
-using Inuveon.EventStore.Converters;
-using Inuveon.EventStore.Abstractions;
+using Inuveon.EventStore.Abstractions.Converters;
+using Inuveon.EventStore.Abstractions.Messages;
 
 namespace Inuveon.EventStore.Tests.Converters;
 
 public class DomainEventJsonConverterTests
 {
-    private string ValidJson => "{\"TypeDiscriminator\":\"" + typeof(SomethingHappened).AssemblyQualifiedName + "\",\"Id\":\"00000000-0000-0000-0000-000000000000\",\"Timestamp\":\"0001-01-01T00:00:00+00:00\",\"Version\":0}";
-    private class SomethingHappened : IDomainEvent
-    {
-        public Guid MessageId { get; } = Guid.NewGuid();
-        public Guid? CorrelationId { get; }
-        public Guid? CausationId { get; }
-        
-        public DateTimeOffset Timestamp { get; } = DateTimeOffset.UtcNow;
-        public Guid AggregateId { get; } = Guid.NewGuid();
-        public long Version { get; } = 0;
-    }
+    private string ValidJson => "{\"TypeDiscriminator\":\"" + typeof(SomethingHappened).AssemblyQualifiedName +
+                                "\",\"Id\":\"00000000-0000-0000-0000-000000000000\",\"Timestamp\":\"0001-01-01T00:00:00+00:00\",\"Version\":0}";
 
     [Fact]
     public void Read_ValidJson_ReturnsDomainEvent()
@@ -79,6 +69,14 @@ public class DomainEventJsonConverterTests
         Assert.Equal(expectedTypeName, typeDiscriminatorProp.GetString());
     }
 
+    private class SomethingHappened : IDomainEvent
+    {
+        public Guid MessageId { get; } = Guid.NewGuid();
+        public Guid? CorrelationId { get; }
+        public Guid? CausationId { get; }
 
+        public DateTimeOffset Timestamp { get; } = DateTimeOffset.UtcNow;
+        public Guid AggregateId { get; } = Guid.NewGuid();
+        public long Version { get; } = 0;
+    }
 }
-

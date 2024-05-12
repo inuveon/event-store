@@ -1,5 +1,6 @@
 using System.Text;
-using Inuveon.EventStore.CosmosDb;
+using Inuveon.EventStore.Providers;
+using Inuveon.EventStore.Providers.CosmosDbNoSql;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Inuveon.EventStore.Providers.Tests.CosmosDbNoSql;

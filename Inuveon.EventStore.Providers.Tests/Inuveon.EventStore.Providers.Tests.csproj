@@ -22,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Inuveon.EventStore.CosmosDb\Inuveon.EventStore.CosmosDb.csproj" />
+      <ProjectReference Include="..\Inuveon.EventStore.Providers\Inuveon.EventStore.Providers.csproj" />
     </ItemGroup>
 
 </Project>
