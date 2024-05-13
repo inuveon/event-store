@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Inuveon.EventStore.Abstractions.Entities;
 using Inuveon.EventStore.Abstractions.Storage;
 
@@ -10,7 +11,8 @@ internal class EventStore(IEventStoreProvider provider) : IEventStore
         await provider.AppendEventsAsync(aggregate, cancellationToken);
     }
 
-    public async Task<IAggregateRoot> LoadAggregateAsync<TAggregate>(Guid aggregateId, CancellationToken cancellationToken) where TAggregate : IAggregateRoot, new()
+    public async Task<IAggregateRoot> LoadAggregateAsync<TAggregate>(Guid aggregateId,
+        CancellationToken cancellationToken) where TAggregate : IAggregateRoot, new()
     {
         return await provider.LoadAggregateAsync<TAggregate>(aggregateId, cancellationToken);
     }

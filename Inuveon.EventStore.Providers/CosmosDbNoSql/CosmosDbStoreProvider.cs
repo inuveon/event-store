@@ -7,7 +7,8 @@ using Microsoft.Azure.Cosmos;
 
 namespace Inuveon.EventStore.Providers.CosmosDbNoSql;
 
-public class CosmosDbStoreProvider(Database database, JsonSerializerOptions jsonSerializerSettings) : IEventStoreProvider
+public class CosmosDbStoreProvider(Database database, JsonSerializerOptions jsonSerializerSettings)
+    : IEventStoreProvider
 {
     public async Task AppendEventsAsync(IAggregateRoot aggregate, CancellationToken cancellationToken)
     {
@@ -15,7 +16,7 @@ public class CosmosDbStoreProvider(Database database, JsonSerializerOptions json
         var container = database.GetContainer(containerName);
         var partitionKey = new PartitionKey(aggregate.Id.ToString());
 
-        TransactionalBatch transactionalBatch = container.CreateTransactionalBatch(partitionKey);
+        var transactionalBatch = container.CreateTransactionalBatch(partitionKey);
 
         foreach (var @event in aggregate.UncommittedEvents)
         {
@@ -23,24 +24,24 @@ public class CosmosDbStoreProvider(Database database, JsonSerializerOptions json
             transactionalBatch = transactionalBatch.CreateItem(storeEvent);
         }
 
-        TransactionalBatchResponse response = await transactionalBatch.ExecuteAsync(cancellationToken);
+        var response = await transactionalBatch.ExecuteAsync(cancellationToken);
 
         if (!response.IsSuccessStatusCode)
-        {
             // Log the error or handle it as needed
             throw new Exception($"Failed to commit batch: {response.ErrorMessage}");
-        }
     }
 
-    public async Task<IAggregateRoot> LoadAggregateAsync<TAggregate>(Guid aggregateId, CancellationToken cancellationToken) where TAggregate : IAggregateRoot, new()
+    public async Task<IAggregateRoot> LoadAggregateAsync<TAggregate>(Guid aggregateId,
+        CancellationToken cancellationToken) where TAggregate : IAggregateRoot, new()
     {
-        QueryDefinition query = new QueryDefinition(
+        var query = new QueryDefinition(
                 "select * from t where t.streamId = @aggregateId order by t.version asc")
             .WithParameter("@aggregateId", aggregateId.ToString());
 
         var container = database.GetContainer(typeof(TAggregate).Name.ToLower());
         var partitionKey = new PartitionKey(aggregateId.ToString());
-        var iterator = container.GetItemQueryIterator<dynamic>(query, requestOptions: new QueryRequestOptions { PartitionKey = partitionKey });
+        var iterator = container.GetItemQueryIterator<dynamic>(query,
+            requestOptions: new QueryRequestOptions { PartitionKey = partitionKey });
 
         var events = new List<StoreEvent>();
         while (iterator.HasMoreResults)
@@ -51,17 +52,16 @@ public class CosmosDbStoreProvider(Database database, JsonSerializerOptions json
                 // Use custom JsonSerializerSettings here
                 string json = JsonSerializer.Serialize(doc);
                 var storeEvent = JsonSerializer.Deserialize<StoreEvent>(json, jsonSerializerSettings);
-                events.Add(storeEvent);
-                
-                Debug.WriteLine($"Loaded Event - ID: {storeEvent.Id}, Type: {storeEvent.EventType}, Version: {storeEvent.Version}");
+                events.Add(storeEvent!);
+
+                Debug.WriteLine(
+                    $"Loaded Event - ID: {storeEvent!.Id}, Type: {storeEvent.EventType}, Version: {storeEvent.Version}");
             }
         }
 
         if (!events.Any())
-        {
             throw new AggregateNotFoundException(aggregateId, typeof(TAggregate), "No events found for the aggregate.");
-        }
-        
+
         Debug.WriteLine($"Total events loaded for Aggregate ID {aggregateId}: {events.Count}");
 
         var aggregate = new TAggregate();

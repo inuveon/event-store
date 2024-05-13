@@ -1,5 +1,5 @@
 using System.Text;
-using Inuveon.EventStore.Providers;
+using System.Text.Json;
 using Inuveon.EventStore.Providers.CosmosDbNoSql;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -15,7 +15,6 @@ public class AnotherEntity
 {
     public Guid Id { get; set; }
 }
-
 
 public class CustomCosmosSerializerTests
 {
@@ -39,15 +38,15 @@ public class CustomCosmosSerializerTests
         // Arrange
         var serializer = new CustomCosmosSerializer();
         var entity = new AnotherEntity { Id = Guid.NewGuid() };
-        
+
         using var invalidStream = serializer.ToStream(entity);
         using var reader = new StreamReader(invalidStream);
         var invalidJson = reader.ReadToEnd();
-        
+
         using var stream = new MemoryStream(Encoding.UTF8.GetBytes(invalidJson));
 
         // Act & Assert
-        Assert.Throws<System.Text.Json.JsonException>(() => serializer.FromStream<TestEntity>(stream));
+        Assert.Throws<JsonException>(() => serializer.FromStream<TestEntity>(stream));
     }
 
     [Fact]

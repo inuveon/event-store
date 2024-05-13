@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>Inuveon.EventStore</id>
+    <version>0.0.1</version>
+    <authors>Rico Fritzsche</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="file">LICENSE.md</license>
+<!--    <icon>icon.png</icon>-->
+    <projectUrl>https://inuveon.com/eventstore/</projectUrl>
+    <description>The Inuveon Event Store is a robust, open-source event sourcing solution and CQRS framework designed to seamlessly integrate with .NET applications. </description>
+    <releaseNotes>Initial functionality using CosmosDb for NoSQL.</releaseNotes>
+    <copyright>$copyright$</copyright>
+    <tags>cqrs eventstore eventsourcing cosmosdb</tags>
+  </metadata>
+  <files>
+    <file src="LICENSE.md" target=""/>
+  </files>
+</package>

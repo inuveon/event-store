@@ -11,11 +11,8 @@ public static class EventStoreProviderFactory
     public static IServiceCollection RegisterProvider(this IServiceCollection services, EventStoreOptions options)
     {
         var providerSettings = services.BuildServiceProvider().GetService<IEventStoreSettingsProvider>();
-        if (providerSettings == null)
-        {
-            throw new InvalidOperationException("No provider settings found");
-        }
-        
+        if (providerSettings == null) throw new InvalidOperationException("No provider settings found");
+
         switch (options.StoreProvider)
         {
             case "CosmosDB":
@@ -30,8 +27,8 @@ public static class EventStoreProviderFactory
             default:
                 throw new ArgumentException($"Unsupported store provider: {options.StoreProvider}");
         }
-        
-        
+
+
         services.AddHostedService<EventStoreInitializerService>();
         return services;
     }

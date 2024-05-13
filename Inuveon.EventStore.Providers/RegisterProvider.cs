@@ -1,10 +1,3 @@
-using System.Text.Json;
-using Inuveon.EventStore.Abstractions.Converters;
-using Inuveon.EventStore.Abstractions.Storage;
-using Inuveon.EventStore.Providers.CosmosDbNoSql;
-using Microsoft.Azure.Cosmos;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace Inuveon.EventStore.Providers;
 
 public static class RegisterProvider

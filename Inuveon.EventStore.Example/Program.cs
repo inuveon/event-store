@@ -1,7 +1,7 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 using Inuveon.EventStore.Abstractions.Strategies;
 using Inuveon.EventStore.Extensions;
-using Inuveon.EventStore.Providers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,13 +10,18 @@ var builder = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
     {
         var eventStoreConfig = hostContext.Configuration.GetSection("EventStore");
-        
+
         // Configure EventStore
         services.AddEventStore(options =>
         {
+            options.ConnectionString = eventStoreConfig["ConnectionString"]!;
+            options.DatabaseName = eventStoreConfig["DatabaseName"]!;
+            options.ApplicationName = eventStoreConfig["ApplicationName"]!;
             options.StoreStrategy = StoreStrategy.OneStreamPerAggregate;
+            options.Throughput = 400;
             options.StoreProvider = eventStoreConfig["Provider"] ?? "CosmosDB";
-            options.AssemblyFilter = assembly => Assembly.GetExecutingAssembly().FullName!.Contains("Inuveon.EventStore");
+            options.AssemblyFilter =
+                assembly => Assembly.GetExecutingAssembly().FullName!.Contains("Inuveon.EventStore");
 
             options.AssembliesToScan = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(assembly => options.AssemblyFilter(assembly))
@@ -25,8 +30,8 @@ var builder = Host.CreateDefaultBuilder(args)
     })
     .ConfigureAppConfiguration((hostingContext, config) =>
     {
-        config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-        config.AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+        config.AddJsonFile("appsettings.json", false, true);
+        config.AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true);
     });
 
 // Build and start the host

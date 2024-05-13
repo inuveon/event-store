@@ -15,17 +15,17 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
-    
+
     <ItemGroup>
-      <ProjectReference Include="..\Inuveon.EventStore.Abstractions\Inuveon.EventStore.Abstractions.csproj" />
-      <ProjectReference Include="..\Inuveon.EventStore\Inuveon.EventStore.csproj" />
+        <ProjectReference Include="..\Inuveon.EventStore.Abstractions\Inuveon.EventStore.Abstractions.csproj"/>
+        <ProjectReference Include="..\Inuveon.EventStore\Inuveon.EventStore.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="FluentValidation" Version="11.9.1" />
-      <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+        <PackageReference Include="FluentValidation" Version="11.9.1"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0"/>
     </ItemGroup>
 
 </Project>
